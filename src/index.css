@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply bg-white text-gray-900 font-sans antialiased;
+  }
+
+  h1 {
+    @apply text-5xl md:text-6xl font-normal tracking-tight;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl font-bold tracking-tight;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+}
+
+@layer components {
+  .all-\[unset\] {
+    all: unset;
+  }
+}
+
+:root {
+  --animate-spin: spin 1s linear infinite;
+}
+
+.animate-fade-in {
+  animation: fade-in 1s var(--animation-delay, 0s) ease forwards;
+}
+
+.animate-fade-up {
+  animation: fade-up 1s var(--animation-delay, 0s) ease forwards;
+}
+
+.animate-marquee {
+  animation: marquee var(--duration) infinite linear;
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical var(--duration) linear infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 8s infinite;
+}
+
+.animate-spin {
+  animation: var(--animate-spin);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes image-glow {
+  0% {
+    opacity: 0;
+    animation-timing-function: cubic-bezier(0.74, 0.25, 0.76, 1);
+  }
+
+  10% {
+    opacity: 0.7;
+    animation-timing-function: cubic-bezier(0.12, 0.01, 0.08, 0.99);
+  }
+
+  to {
+    opacity: 0.4;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes shimmer {
+  0%,
+  90%,
+  to {
+    background-position: calc(-100% - var(--shimmer-width)) 0;
+  }
+
+  30%,
+  60% {
+    background-position: calc(100% + var(--shimmer-width)) 0;
+  }
+}
+
+@keyframes marquee {
+  0% {
+    transform: translate(0);
+  }
+
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+@keyframes marquee-vertical {
+  0% {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+@layer utilities {
+  .marker-underline {
+    position: relative;
+    display: inline-block;
+  }
+
+  .marker-underline::after {
+    content: "";
+    position: absolute;
+    left: -0.1em;
+    bottom: -0.08em;
+    width: 105%;
+    height: 0.45em;
+    background-color: #C5F6FA;
+    border-radius: 0;
+    opacity: 0;
+    transition: opacity 150ms ease-in-out;
+    z-index: 0;
+  }
+
+  .marker-underline:hover::after {
+    opacity: 1;
+  }
+
+  .highlight {
+    position: relative;
+    display: inline-block;
+    padding: 0 0.05em;
+  }
+
+  .highlight::before {
+    content: "";
+    position: absolute;
+    left: -0.1em;
+    bottom: 0.08em;
+    width: 105%;
+    height: 0.45em;
+    background-color: #C5F6FA; /* dein Türkis, 100% Deckkraft */
+    border-radius: 0; /* eckig */
+    z-index: 0; /* liegt unter der Schrift */
+  }
+
+  .highlight span {
+    position: relative;
+    z-index: 1; /* Text über dem Marker */
+  }
+
+  .highlight-blue {
+    position: relative;
+    display: inline-block;
+    padding: 0 0.05em;
+  }
+
+  .highlight-blue::before {
+    content: "";
+    position: absolute;
+    left: -0.1em;
+    bottom: 0.08em;
+    width: 105%;
+    height: 0.45em;
+    background-color: #A8E3E9; /* Blau aus CI */
+    border-radius: 0; /* eckig */
+    z-index: 0; /* liegt unter der Schrift */
+  }
+
+  .highlight-blue span {
+    position: relative;
+    z-index: 1; /* Text über dem Marker */
+  }
+}

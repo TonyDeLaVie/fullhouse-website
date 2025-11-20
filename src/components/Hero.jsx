@@ -6,7 +6,7 @@ export default function Hero() {
       <div className="container flex flex-col items-center">
         <AnnouncementBanner />
         <h1 className="mb-6 leading-tight">
-          Die besten technischen Außendienst-Teams<br />vertrauen <span className="highlight"><span>Full House</span></span>
+          Die besten technischen Außendienst-Teams<br />vertrauen <span className="highlight"><span>Fullhouse</span></span>
         </h1>
 
         <p className="text-gray-600 text-lg mb-10 max-w-2xl">

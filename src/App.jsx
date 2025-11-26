@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import Header from './components/Header.jsx'
 import Hero from './components/Hero.jsx'
 import LogoStrip from './components/LogoStrip.jsx'
@@ -9,6 +10,15 @@ import CompetitiveAdvantageSection from './components/CompetitiveAdvantageSectio
 import Footer from './components/Footer.jsx'
 
 export default function App() {
+  useEffect(() => {
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
+      .test(navigator.userAgent);
+
+    if (isMobile) {
+      window.location.href = "/mobile/index.html";
+    }
+  }, []);
+
   return (
     <div className="min-h-screen">
       <Header />

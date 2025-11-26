@@ -10,12 +10,12 @@ export default function Hero() {
         </h1>
 
         <p className="text-gray-600 text-lg mb-10 max-w-2xl">
-          Wir füllen Ihren technischen Außendienst in <span className="highlight-blue"><span>7 Tagen</span></span> – ohne <span className="highlight-blue"><span>Vermittlungskosten</span></span>.
+          Wir füllen Ihren technischen Außendienst innerhalb von <span className="highlight-blue"><span>2 Wochen</span></span> – ohne <span className="highlight-blue"><span>Vermittlungskosten</span></span>.
         </p>
 
-        <button className="bg-black text-white font-semibold px-8 py-3 rounded-full hover:bg-accent hover:text-black transition text-lg">
+        <a href="tel:01741429615" className="bg-black text-white font-semibold px-8 py-3 rounded-full hover:bg-accent hover:text-black transition text-lg">
           Get Demo
-        </button>
+        </a>
       </div>
     </section>
   );

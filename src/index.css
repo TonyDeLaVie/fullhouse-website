@@ -134,6 +134,15 @@
   }
 }
 
+@keyframes logo-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
 @layer utilities {
   .marker-underline {
     position: relative;
@@ -202,5 +211,13 @@
   .highlight-blue span {
     position: relative;
     z-index: 1; /* Text über dem Marker */
+  }
+
+  .animate-logo-scroll {
+    animation: logo-scroll 40s linear infinite;
+  }
+
+  .animate-logo-scroll:hover {
+    animation-play-state: paused;
   }
 }

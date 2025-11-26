@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
-import IconProgress, { ICON_COMPONENTS } from './IconProgress.jsx';
+import IconProgress from './IconProgress.jsx';
+import { useMobileBreakpoint } from '../hooks/useMobileBreakpoint.js';
 
 const roleData = [
   { id: 'bauleiter', title: 'Bauleiter', image: '/Bilder%20Fachbereiche/Bauleiter.png', row: 'top', order: 0 },
@@ -39,26 +40,27 @@ const totalRoles = roleData.length;
 const ICONS_COUNT = iconSteps.length;
 const TOTAL_STAGES = totalRoles + ICONS_COUNT + 10;
 const STEP = 1 / TOTAL_STAGES;
-const TRANSITION_WINDOW = STEP * 0.4;
+const TRANSITION_WINDOW = STEP * 1.2;
 const FINAL_START = (totalRoles + 4) * STEP;
 const FINAL_END = FINAL_START + ICONS_COUNT * STEP + STEP * 3;
+const FINAL_TEXT_START = FINAL_END - STEP * 2;
 
-function RoleCard({ role, scrollYProgress }) {
+function RoleCardAnimated({ role, scrollYProgress }) {
   const baseStart = role.order * STEP;
   const appearStart = baseStart;
   const appearEnd = baseStart + TRANSITION_WINDOW;
-  const peakEnd = FINAL_START - STEP * 0.5; // Gemeinsamer Zeitpunkt, an dem alle Bilder voll sichtbar sind
+  const peakEnd = FINAL_START - STEP * 0.5;
 
   const opacity = useTransform(
     scrollYProgress,
-    [appearStart - 0.01, appearStart, appearEnd, peakEnd, FINAL_START, FINAL_END],
+    [appearStart - 0.02, appearStart, appearEnd, peakEnd, FINAL_START, FINAL_END],
     [0, 0, 1, 1, 0, 0]
   );
 
   const translateY = useTransform(
     scrollYProgress,
-    [appearStart - 0.02, appearStart, appearEnd, FINAL_START],
-    [32, 0, 0, -16]
+    [appearStart - 0.03, appearStart, appearEnd, FINAL_START],
+    [32, 32, 0, -16]
   );
 
   return (
@@ -71,6 +73,7 @@ function RoleCard({ role, scrollYProgress }) {
           src={role.image}
           alt={role.title}
           className="h-full w-full object-cover"
+          style={{ transform: 'scale(1.2)', objectPosition: 'center top' }}
           loading="lazy"
         />
       </motion.div>
@@ -81,7 +84,26 @@ function RoleCard({ role, scrollYProgress }) {
   );
 }
 
-export default function FocusRolesSection() {
+function RoleCardStatic({ role }) {
+  return (
+    <figure className="flex flex-col items-center gap-5">
+      <div className="relative w-full max-w-sm overflow-hidden rounded-3xl bg-white shadow-[0_24px_60px_rgba(15,23,42,0.12)] ring-1 ring-white/60 mx-auto">
+        <img
+          src={role.image}
+          alt={role.title}
+          className="h-full w-full object-cover"
+          style={{ transform: 'scale(1.05)', objectPosition: 'center top' }}
+          loading="lazy"
+        />
+      </div>
+      <figcaption className="text-xl font-semibold text-[#0B1324] leading-relaxed text-center">
+        {role.title}
+      </figcaption>
+    </figure>
+  );
+}
+
+function FocusRolesDesktop() {
   const sectionRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -89,9 +111,8 @@ export default function FocusRolesSection() {
   });
 
   const roles = useMemo(() => roleData, []);
+  const [activeIcon, setActiveIcon] = useState(0);
 
-  const FINAL_TEXT_START = FINAL_END - STEP * 2;
-  
   const finalOpacity = useTransform(
     scrollYProgress,
     [FINAL_START - STEP * 1, FINAL_START + STEP * 0.2, FINAL_TEXT_START, FINAL_END],
@@ -100,7 +121,6 @@ export default function FocusRolesSection() {
   const finalProgress = useTransform(scrollYProgress, [FINAL_START, FINAL_END], [0, 1]);
   const overlayY = useTransform(finalProgress, (value) => 20 + value * 20);
   const headingOpacity = useTransform(finalProgress, [0, 0.85, 0.95], [1, 1, 0]);
-  const finalY = useTransform(finalProgress, (value) => value * 20);
   const iconsOpacity = useTransform(finalProgress, [0, 0, 0.85, 0.95], [1, 1, 1, 0]);
   const textOpacity = useTransform(finalProgress, [0, 0.05, 0.85, 0.95], [1, 1, 1, 0]);
   const textY = useTransform(finalProgress, [0, 0.05, 0.95], [0, 0, 0]);
@@ -109,8 +129,6 @@ export default function FocusRolesSection() {
     [FINAL_TEXT_START + STEP * 0.5, FINAL_TEXT_START + STEP * 1, FINAL_END - STEP * 0.5, FINAL_END],
     [0, 1, 1, 1]
   );
-  const [activeIcon, setActiveIcon] = useState(0);
-  const overlayPointerEvents = useTransform(finalOpacity, (value) => (value > 0.1 ? 'auto' : 'none'));
 
   const handleSelectIcon = (index) => {
     const targetProgress = FINAL_START + index * STEP + STEP * 0.5;
@@ -142,7 +160,7 @@ export default function FocusRolesSection() {
       ref={sectionRef}
       className="relative pt-16 md:pt-28 pb-12 md:pb-16 px-6 bg-white text-center"
       aria-labelledby="focus-roles-heading"
-      style={{ fontFamily: 'Lato, sans-serif', minHeight: '480vh' }}
+      style={{ fontFamily: 'Lato, sans-serif', minHeight: '600vh' }}
     >
       <div className="sticky top-[1vh] md:top-[0.5vh] flex min-h-screen items-center justify-center">
         <div className="mx-auto flex w-full max-w-5xl flex-col items-center gap-12 pt-0 md:pt-2">
@@ -159,7 +177,7 @@ export default function FocusRolesSection() {
             <div className="grid w-full gap-10">
               <div className="grid gap-12 md:grid-cols-3">
                 {roles.map((role) => (
-                  <RoleCard key={role.id} role={role} scrollYProgress={scrollYProgress} />
+                  <RoleCardAnimated key={role.id} role={role} scrollYProgress={scrollYProgress} />
                 ))}
               </div>
             </div>
@@ -207,5 +225,61 @@ export default function FocusRolesSection() {
       <div className="h-[120px]" />
     </section>
   );
+}
+
+function FocusRolesMobile() {
+  const roles = useMemo(() => roleData, []);
+
+  return (
+    <section
+      id="unternehmen"
+      className="pt-16 pb-16 px-6 bg-white"
+      aria-labelledby="focus-roles-heading-mobile"
+      style={{ fontFamily: 'Lato, sans-serif' }}
+    >
+      <div className="mx-auto flex w-full max-w-3xl flex-col gap-12 items-center text-center">
+        <h1
+          id="focus-roles-heading-mobile"
+          className="text-4xl font-bold tracking-tight text-[#0B1324] text-center"
+        >
+          Gemacht für die Stellen, die{' '}
+          <span className="highlight-blue"><span>wirklich zählen</span></span>.
+        </h1>
+
+        <div className="grid gap-10 w-full">
+          {roles.map((role) => (
+            <RoleCardStatic key={role.id} role={role} />
+          ))}
+        </div>
+
+        <div className="space-y-6 w-full">
+          {iconSteps.map((step) => (
+            <div
+              key={step.title}
+              className="rounded-2xl border border-[#E6E8EB] bg-white/80 p-6 shadow-sm text-center"
+            >
+              <h3 className="text-2xl font-semibold text-[#0B1324] mb-3">
+                {step.title}
+              </h3>
+              <p className="text-lg text-[#0B1324]/70 leading-relaxed">
+                {step.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className="rounded-2xl border border-[#E6E8EB] bg-[#F7FBFC] p-8 text-center w-full">
+          <h2 className="text-3xl font-bold text-[#0B1324] leading-snug">
+            <span className="highlight-blue"><span>120 Stellen</span></span> besetzt und wir hören nicht auf.
+          </h2>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export default function FocusRolesSection() {
+  const isMobile = useMobileBreakpoint();
+  return isMobile ? <FocusRolesMobile /> : <FocusRolesDesktop />;
 }
 

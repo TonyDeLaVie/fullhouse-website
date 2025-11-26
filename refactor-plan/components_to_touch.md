@@ -1,0 +1,11 @@
+- `Header.jsx` – Mobile Navigation + Button Stack
+- `Hero.jsx` & `AnnouncementBanner.jsx` – Typografie/Gaps
+- `LogoStrip.jsx` – Horizontal Scroll -> Wrap
+- `FocusRolesSection.jsx` & `IconProgress.jsx` – Sticky Grid, Motion Guards
+- `HowItWorks.jsx` – 3-Spalten-Grid -> Stack, Media Scaling
+- `ResultsSection.jsx` – Metrics Grid + Cards Padding
+- `AboutUsSection.jsx` – Split Layout -> Column Stack
+- `CompetitiveAdvantageSection.jsx` – Cards & Timeline Simplifizierung
+- `Footer.jsx` – Link-Listen reflow
+- Global assets (`App.jsx`, `index.css`, `App.css`) – Import `mobile.css`, Basisklassen
+

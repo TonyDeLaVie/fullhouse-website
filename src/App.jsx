@@ -6,6 +6,7 @@ import HowItWorks from './components/HowItWorks.jsx'
 import ResultsSection from './components/ResultsSection.jsx'
 import AboutUsSection from './components/AboutUsSection.jsx'
 import CompetitiveAdvantageSection from './components/CompetitiveAdvantageSection.jsx'
+import Footer from './components/Footer.jsx'
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
       <ResultsSection />
       <AboutUsSection />
       <CompetitiveAdvantageSection />
+      <Footer />
     </div>
   );
 }

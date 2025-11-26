@@ -32,7 +32,7 @@ export default function CompetitiveAdvantageSection() {
           
           {/* CTA Button */}
           <a
-            href="#kontakt"
+            href="tel:01741429615"
             className="inline-flex items-center justify-center rounded-full px-6 py-3 text-lg font-semibold text-white transition-all duration-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
             style={{ 
               backgroundColor: '#0A0E17',
@@ -45,13 +45,6 @@ export default function CompetitiveAdvantageSection() {
             onMouseLeave={(e) => {
               e.target.style.backgroundColor = '#0A0E17';
               e.target.style.color = 'white';
-            }}
-            onClick={(e) => {
-              e.preventDefault();
-              const element = document.getElementById('kontakt');
-              if (element) {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }
             }}
           >
             Jetzt kostenloses Erstgespräch buchen.

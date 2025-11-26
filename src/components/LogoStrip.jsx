@@ -1,3 +1,5 @@
+import { useMobileBreakpoint } from '../hooks/useMobileBreakpoint.js';
+
 const defaultLogos = [
   { src: '/logos/krombacher.png', alt: 'Krombacher', size: 'normal' },
   { src: '/logos/rieter.png', alt: 'RIETER', size: 'normal' },
@@ -8,6 +10,8 @@ const defaultLogos = [
 ];
 
 export default function LogoStrip({ logos = defaultLogos }) {
+  const isMobile = useMobileBreakpoint();
+
   const getSizeClass = (size) => {
     switch (size) {
       case 'small':
@@ -19,17 +23,31 @@ export default function LogoStrip({ logos = defaultLogos }) {
     }
   };
 
+  // Dupliziere Logos für nahtlose Animation
+  const duplicatedLogos = [...logos, ...logos];
+
+  const marqueeClass = isMobile
+    ? 'flex items-center gap-10 overflow-x-auto snap-x snap-mandatory px-1'
+    : 'flex items-center gap-x-16 animate-logo-scroll group';
+
   return (
-    <section className="py-14 bg-white">
-      <div className="container">
-        <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-10">
-          {logos.map((logo, idx) => (
-            <img
+    <section className="py-14 bg-white overflow-hidden">
+      <div className="relative">
+        <div
+          className={marqueeClass}
+          style={isMobile ? { animation: 'none' } : undefined}
+        >
+          {duplicatedLogos.map((logo, idx) => (
+            <div
               key={idx}
-              src={logo.src}
-              alt={logo.alt}
-              className={`${getSizeClass(logo.size)} w-auto object-contain grayscale opacity-70 hover:opacity-90 hover:grayscale-0 transition`}
-            />
+              className="flex-shrink-0 snap-center"
+            >
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                className={`${getSizeClass(logo.size)} w-auto object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-300`}
+              />
+            </div>
           ))}
         </div>
       </div>

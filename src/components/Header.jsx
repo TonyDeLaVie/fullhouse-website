@@ -3,9 +3,23 @@ import { useState } from 'react';
 const navLinks = [
   { href: '#unternehmen', label: 'Für Unternehmen' },
   { href: '#so-funktioniert-es', label: 'Ergebnisse' },
-  { href: '#about', label: 'Über uns' },
-  { href: '#kontakt', label: 'Kontakt' },
+  { href: '#about', label: 'Über uns', isCustomScroll: true },
+  { href: 'tel:01741429615', label: 'Kontakt' },
 ];
+
+const scrollToAboutUs = (e) => {
+  e.preventDefault();
+  const element = document.getElementById('about');
+  if (element) {
+    const rect = element.getBoundingClientRect();
+    const elementTop = rect.top + window.scrollY;
+    const elementHeight = rect.height;
+    // Scroll zu ca. 40% der Section, damit beide Panels vollständig sichtbar sind
+    // Das entspricht ungefähr scrollYProgress = 0.4
+    const scrollTarget = elementTop + (elementHeight * 0.4) - (window.innerHeight * 0.5);
+    window.scrollTo({ top: scrollTarget, behavior: 'smooth' });
+  }
+};
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -22,7 +36,12 @@ export default function Header() {
 
         <nav className="hidden md:flex space-x-10 text-gray-600">
           {navLinks.map((link) => (
-            <a key={link.href} href={link.href} className="hover:text-black transition marker-underline">
+            <a
+              key={link.href}
+              href={link.href}
+              className="hover:text-black transition marker-underline"
+              onClick={link.isCustomScroll ? scrollToAboutUs : undefined}
+            >
               {link.label}
             </a>
           ))}
@@ -54,7 +73,12 @@ export default function Header() {
               key={link.href}
               href={link.href}
               className="mobile-nav-link marker-underline"
-              onClick={closeMenu}
+              onClick={(e) => {
+                if (link.isCustomScroll) {
+                  scrollToAboutUs(e);
+                }
+                closeMenu();
+              }}
             >
               {link.label}
             </a>

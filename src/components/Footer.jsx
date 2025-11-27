@@ -1,11 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Footer() {
   const [openSection, setOpenSection] = useState(null);
+  const impressumRef = useRef(null);
+  const datenschutzRef = useRef(null);
 
   const toggleSection = (section) => {
+    const wasClosed = openSection !== section;
     setOpenSection(openSection === section ? null : section);
+    
+    // Scroll zur geöffneten Sektion nach kurzer Verzögerung (wenn sie gerade geöffnet wurde)
+    if (wasClosed && section !== null) {
+      setTimeout(() => {
+        const targetRef = section === 'impressum' ? impressumRef : datenschutzRef;
+        if (targetRef.current) {
+          targetRef.current.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start',
+            inline: 'nearest'
+          });
+        }
+      }, 200); // Verzögerung, damit die Animation starten kann
+    }
   };
 
   return (
@@ -36,6 +53,7 @@ export default function Footer() {
         <AnimatePresence>
           {openSection === 'impressum' && (
             <motion.div
+              ref={impressumRef}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
@@ -121,6 +139,7 @@ export default function Footer() {
 
           {openSection === 'datenschutz' && (
             <motion.div
+              ref={datenschutzRef}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: 'auto', opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}

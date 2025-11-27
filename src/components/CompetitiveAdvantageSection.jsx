@@ -27,7 +27,7 @@ export default function CompetitiveAdvantageSection() {
           <h2 
             className="text-3xl md:text-4xl font-bold text-[#0B1324] leading-tight max-w-4xl"
           >
-            Besetze deine nächste Stelle in Rekordzeit.
+            Besetze Deine nächste Stelle in Rekordzeit.
           </h2>
           
           {/* CTA Button */}

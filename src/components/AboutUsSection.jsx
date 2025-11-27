@@ -9,24 +9,31 @@ function AboutUsDesktop() {
     offset: ['start start', 'end start'],
   });
 
-  const outroStart = 0.75;
+  const outroStart = 0.7;
   const imageOpacity = useTransform(
     scrollYProgress,
-    [0, 0.05, outroStart, outroStart + 0.1],
+    [0, 0.05, outroStart, outroStart + 0.25],
     [0, 1, 1, 0]
+  );
+  
+  // Sanfter Scale-Effekt beim Ausblenden
+  const imageScale = useTransform(
+    scrollYProgress,
+    [outroStart, outroStart + 0.25],
+    [1, 0.95]
   );
 
   const viktorY = useTransform(scrollYProgress, [0.08, 0.18], [60, 0]);
   const viktorFinalOpacity = useTransform(
     scrollYProgress,
-    [0.08, 0.18, outroStart, outroStart + 0.1],
+    [0.08, 0.18, outroStart, outroStart + 0.2],
     [0, 1, 1, 0]
   );
 
   const sebastianY = useTransform(scrollYProgress, [0.15, 0.3], [40, 0]);
   const sebastianFinalOpacity = useTransform(
     scrollYProgress,
-    [0.15, 0.3, outroStart, outroStart + 0.1],
+    [0.15, 0.3, outroStart, outroStart + 0.2],
     [0, 1, 1, 0]
   );
 
@@ -47,7 +54,11 @@ function AboutUsDesktop() {
             src="/about_us/about_us.png"
             alt="Fullhouse Team"
             className="w-full h-auto rounded-2xl"
-            style={{ opacity: imageOpacity }}
+            style={{ 
+              opacity: imageOpacity,
+              scale: imageScale,
+              transition: 'opacity 0.6s ease-out, transform 0.6s ease-out'
+            }}
           />
 
           <motion.div
